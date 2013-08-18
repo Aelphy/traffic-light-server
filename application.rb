@@ -3,6 +3,7 @@ require 'rubygems'
 require 'bundler/setup'
 require 'sinatra'
 require File.join(File.dirname(__FILE__), 'environment')
+require File.join(File.dirname(__FILE__), 'lib', 'traffic_light_mode')
 
 configure do
   set :views, "#{File.dirname(__FILE__)}/views"
@@ -20,12 +21,16 @@ end
 
 get '/standart' do
   @mode = 'Стандартный'
-  File.open(File.join(File.dirname(__FILE__), 'public', 'mode'), 'w') { |f| f << 'standart' }
+  TrafficLightMode.set 'Стандартный'
   haml :mode
 end
 
 get '/new_year' do
   @mode = 'Новый Год'
-  File.open(File.join(File.dirname(__FILE__), 'public', 'mode'), 'w') { |f| f << 'new_year' }
+  TrafficLightMode.set 'Новый Год'
   haml :mode
+end
+
+get '/mode' do
+  TrafficLightMode.get
 end
