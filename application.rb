@@ -1,3 +1,4 @@
+#coding: utf-8
 require 'rubygems'
 require 'bundler/setup'
 require 'sinatra'
@@ -13,11 +14,18 @@ error do
   'Application error'
 end
 
-helpers do
-  # add your helpers here
-end
-
-# root page
 get '/' do
   haml :root
+end
+
+get '/standart' do
+  @mode = 'Стандартный'
+  File.open(File.join(File.dirname(__FILE__), 'public', 'mode'), 'w') { |f| f << 'standart' }
+  haml :mode
+end
+
+get '/new_year' do
+  @mode = 'Новый Год'
+  File.open(File.join(File.dirname(__FILE__), 'public', 'mode'), 'w') { |f| f << 'new_year' }
+  haml :mode
 end
