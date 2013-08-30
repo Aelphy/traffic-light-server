@@ -5,6 +5,8 @@ require 'sinatra'
 require File.join(File.dirname(__FILE__), 'environment')
 require File.join(File.dirname(__FILE__), 'lib', 'traffic_light_mode')
 
+set :bind, '0.0.0.0'
+
 configure do
   set :views, "#{File.dirname(__FILE__)}/views"
 end
