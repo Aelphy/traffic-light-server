@@ -1,10 +1,10 @@
-= Traffic Light On Sinatra
+= БМС
 
-Билд Светофор Сервер
+Билд Мониторнг Сервер (БМС)
 
-== Getting Started
+Легковесный сервер, способный работать на raspberryPI.
+Осуществляет мониторинг за статусом билдов проекта.
+Умеет сообщать информацию о своем статусе.
 
-  bundle
-  ruby application.rb
 
-(c) 2013. Usvyatsov Mikhail
+(c) 2013. Usvyatsov Mikhail (Aelphy)
