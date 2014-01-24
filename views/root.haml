@@ -14,6 +14,6 @@
 %br
 %br
 
-%button{onclick: "location.href='master'"} Master
-%button{onclick: "location.href='develop'"} Develop
-
+%form{action: '/choose', method: 'post'}
+  %input{name: 'branch', type: 'text'}
+  %button.finish{class: 'button'} Выбрать ветку

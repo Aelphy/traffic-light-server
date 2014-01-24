@@ -2,11 +2,18 @@
 require 'rubygems'
 require 'bundler/setup'
 require 'sinatra'
+require 'open-uri'
+require 'ox'
+
 require File.join(File.dirname(__FILE__), 'environment')
 require File.join(File.dirname(__FILE__), 'lib', 'traffic_light_mode')
 require File.join(File.dirname(__FILE__), 'lib', 'traffic_light_branch')
 
 set :bind, '0.0.0.0'
+
+use Rack::Auth::Basic, 'Restricted Area' do |username, password|
+  username == 'traffic-light-administrator' and password == 'traffic-light'
+end
 
 configure do
   set :views, "#{File.dirname(__FILE__)}/views"
@@ -17,6 +24,8 @@ error do
   Kernel.puts e.backtrace.join("\n")
   'Application error'
 end
+
+URL = 'http://ci.dev.apress.ru/XmlStatusReport.aspx'
 
 get '/' do
   haml :root
@@ -42,14 +51,15 @@ get '/branch' do
   TrafficLightBranch.get
 end
 
-get '/master' do
-  @branch = 'sg-master'
-  TrafficLightBranch.set @branch
-  haml :branch
-end
+post '/choose' do
+  @branch = params[:branch]
 
-get '/develop' do
-  @branch = 'sg-develop'
+  @avaliable_branches = Ox.parse(open(URL).read).locate('Project').map { |node| node[:name] }
+
+  unless @avaliable_branches.include? @branch
+    return haml :branch_error
+  end
+
   TrafficLightBranch.set @branch
   haml :branch
 end
